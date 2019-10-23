@@ -22,6 +22,10 @@ use rusqlite::types::Value::Text;
 //    }
 //}
 
+//#TODO
+//make a wrapper error type that's a superset of the rusqlite Error type, and probaby the zip Error
+//type.
+
 #[wasm_bindgen]
 pub fn query_db (query_string: &str, db_path: String) -> std::result::Result<String, wasm_bindgen::JsValue> {
     let fixed_string = std::ffi::OsString::from(db_path);
