@@ -47,19 +47,20 @@ pub fn query_db (query_string: &str, db_path: String) -> std::result::Result<Str
         },
         Err(e) => return Err(wasm_bindgen::JsValue::from_str(&e.to_string())),
     };
-    let mut ret_string = "{\n".to_string();
     let json_iter = match result_iter {
         Ok(json_iter) => json_iter,
         Err(e) => return Err(wasm_bindgen::JsValue::from_str(&e.to_string())),
     };
+    let mut building_string = "{\n\"result:\" [".to_string();
     for json in json_iter {
         match json {
-            Ok(s) => ret_string.push_str(&s),
+            Ok(s) => building_string.push_str(&s),
             Err(e) => return Err(wasm_bindgen::JsValue::from_str(&e.to_string())),
         };
     }
-    ret_string.push_str("\n}");
-    Ok(ret_string)
+    building_string.push_str("\n]}");
+    let out_string = building_string.replace("}{", "},{");
+    Ok(out_string)
 }
 
 fn to_json<'a> (row: &Row) -> Result<String> {
